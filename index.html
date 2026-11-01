@@ -1,0 +1,1325 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyphrix Media | Decode the Market. Encrypt the Win.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cyan: #00d4ff;
+            --cyan-dark: #0099cc;
+            --cyan-glow: rgba(0, 212, 255, 0.4);
+            --blue: #0066ff;
+            --dark-bg: #050508;
+            --card-bg: #0c0c14;
+            --card-border: #1a1a2e;
+            --text-primary: #ffffff;
+            --text-secondary: #8892a4;
+            --text-muted: #555e70;
+            --gradient-1: linear-gradient(135deg, #00d4ff, #0066ff);
+            --gradient-2: linear-gradient(135deg, #0c0c14, #1a1a2e);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* ============ ANIMATED BACKGROUND ============ */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .floating-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--cyan);
+            top: -150px;
+            right: -150px;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--blue);
+            bottom: -100px;
+            left: -100px;
+            animation-delay: -10s;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: #7b2ff7;
+            top: 50%;
+            left: 50%;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(15px, 15px) scale(1.02); }
+        }
+
+        /* ============ NAVBAR ============ */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(5, 5, 8, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-logo span {
+            font-weight: 400;
+            font-size: 0.7rem;
+            letter-spacing: 6px;
+            display: block;
+            background: none;
+            -webkit-text-fill-color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--cyan);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-1);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            padding: 10px 28px;
+            background: transparent;
+            border: 1px solid var(--cyan);
+            color: var(--cyan) !important;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+
+        .nav-cta:hover {
+            background: var(--cyan);
+            color: var(--dark-bg) !important;
+            box-shadow: 0 0 30px var(--cyan-glow);
+        }
+
+        .nav-cta::after {
+            display: none !important;
+        }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .hamburger span {
+            width: 28px;
+            height: 2px;
+            background: var(--cyan);
+            transition: 0.3s;
+        }
+
+        /* ============ HERO SECTION ============ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 140px 20px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 50px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--cyan);
+            margin-bottom: 40px;
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--cyan);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 7vw, 5.5rem);
+            font-weight: 900;
+            letter-spacing: 8px;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            background: linear-gradient(180deg, #ffffff 0%, #8892a4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-sub {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(0.8rem, 2vw, 1.1rem);
+            letter-spacing: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        .hero-tagline {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            font-weight: 500;
+            letter-spacing: 4px;
+            margin-bottom: 50px;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .hero-tagline .decode {
+            color: var(--cyan);
+        }
+
+        .hero-tagline .encrypt {
+            color: var(--blue);
+        }
+
+        .hero-tagline::before,
+        .hero-tagline::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 60px;
+            height: 1px;
+            background: var(--gradient-1);
+        }
+
+        .hero-tagline::before { right: 100%; }
+        .hero-tagline::after { left: 100%; }
+
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            padding: 16px 40px;
+            background: var(--gradient-1);
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 40px var(--cyan-glow), 0 0 80px rgba(0, 102, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            padding: 16px 40px;
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--card-border);
+            border-radius: 4px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+            transform: translateY(-2px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .scroll-indicator .line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--cyan), transparent);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* ============ SECTION STYLES ============ */
+        section {
+            position: relative;
+            z-index: 1;
+            padding: 100px 60px;
+        }
+
+        .section-label {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--cyan);
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            background: linear-gradient(180deg, #fff 0%, #8892a4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-desc {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            line-height: 1.8;
+            margin-bottom: 60px;
+        }
+
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: var(--gradient-1);
+            margin-bottom: 40px;
+        }
+
+        /* ============ STATS BAR ============ */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            background: rgba(0, 212, 255, 0.02);
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* ============ SERVICES ============ */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 40px 30px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient-1);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            border-color: rgba(0, 212, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 212, 255, 0.05);
+        }
+
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .service-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .service-tag {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 5px 12px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 3px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--cyan);
+        }
+
+        /* ============ ABOUT / APPROACH ============ */
+        .approach-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .approach-item {
+            padding: 50px 35px;
+            border-right: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .approach-item:last-child {
+            border-right: none;
+        }
+
+        .approach-item:hover {
+            background: rgba(0, 212, 255, 0.03);
+        }
+
+        .approach-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.3;
+            margin-bottom: 20px;
+        }
+
+        .approach-item h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .approach-item p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        /* ============ PROJECTS ============ */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .project-card:hover {
+            border-color: rgba(0, 212, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .project-preview {
+            height: 220px;
+            background: linear-gradient(135deg, #0c0c14, #1a1a2e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-preview::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(to top, var(--card-bg), transparent);
+        }
+
+        .project-preview-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.2;
+            letter-spacing: 5px;
+        }
+
+        .project-info {
+            padding: 30px;
+        }
+
+        .project-category {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--cyan);
+            margin-bottom: 10px;
+        }
+
+        .project-info h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .project-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .project-stats {
+            display: flex;
+            gap: 25px;
+        }
+
+        .project-stat {
+            text-align: center;
+        }
+
+        .project-stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--cyan);
+        }
+
+        .project-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        /* ============ TESTIMONIALS ============ */
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 40px 30px;
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            position: absolute;
+            top: 15px;
+            left: 25px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.2;
+        }
+
+        .testimonial-card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.8;
+            font-style: italic;
+            margin-bottom: 25px;
+        }
+
+        .testimonial-author {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .testimonial-role {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        /* ============ CONTACT ============ */
+        #contact {
+            background: rgba(0, 212, 255, 0.02);
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .contact-info h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+
+        .contact-item-icon {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .contact-item a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-item a:hover {
+            color: var(--cyan);
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 16px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-group textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 40px 60px;
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-left {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-socials a {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--card-border);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .footer-socials a:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 968px) {
+            nav {
+                padding: 15px 30px;
+            }
+
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(5, 5, 8, 0.98);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 30px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            section {
+                padding: 80px 25px;
+            }
+
+            .stats-bar {
+                gap: 40px;
+            }
+
+            .approach-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .approach-item {
+                border-right: none;
+                border-bottom: 1px solid var(--card-border);
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            footer {
+                padding: 30px 25px;
+                justify-content: center;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                letter-spacing: 4px;
+            }
+
+            .hero-tagline {
+                letter-spacing: 2px;
+            }
+
+            .hero-tagline::before,
+            .hero-tagline::after {
+                display: none;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Effects -->
+    <div class="bg-grid"></div>
+    <div class="floating-orb orb-1"></div>
+    <div class="floating-orb orb-2"></div>
+    <div class="floating-orb orb-3"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-logo">
+            CYPHRIX
+            <span>— MEDIA —</span>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#approach">Approach</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#testimonials">Clients</a></li>
+            <li><a href="#contact" class="nav-cta">Get Started</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-badge">Digital Performance Agency</div>
+        <h1>CYPHRIX</h1>
+        <div class="hero-sub">— MEDIA —</div>
+        <div class="hero-tagline">
+            <span class="decode">DECODE THE MARKET</span> · <span class="encrypt">ENCRYPT THE WIN</span>
+        </div>
+        <div class="hero-btns">
+            <a href="#contact" class="btn-primary">Start a Project</a>
+            <a href="#projects" class="btn-secondary">View Our Work</a>
+        </div>
+        <div class="scroll-indicator">
+            <div class="line"></div>
+            SCROLL
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-number">50+</div>
+            <div class="stat-label">Projects Delivered</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">3.5x</div>
+            <div class="stat-label">Avg. ROAS</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">98%</div>
+            <div class="stat-label">Client Retention</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">₹2Cr+</div>
+            <div class="stat-label">Ad Spend Managed</div>
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <section id="services">
+        <div class="section-label">// What We Do</div>
+        <h2 class="section-title">SERVICES</h2>
+        <div class="divider"></div>
+        <p class="section-desc">We don't just run ads — we engineer growth systems. Every campaign is backed by data, driven by psychology, and optimized for maximum ROI.</p>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🎯</div>
+                <h3>META ADS</h3>
+                <p>High-performance Facebook & Instagram campaigns with advanced audience targeting, creative testing, and conversion optimization.</p>
+                <span class="service-tag">Facebook · Instagram · WhatsApp</span>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🔍</div>
+                <h3>GOOGLE ADS</h3>
+                <p>Search, Display, Shopping & YouTube campaigns engineered for maximum visibility and conversion at optimal cost.</p>
+                <span class="service-tag">Search · Display · YouTube</span>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📈</div>
+                <h3>SEO</h3>
+                <p>Technical SEO, content optimization, and authority building to dominate organic search rankings and drive sustainable traffic.</p>
+                <span class="service-tag">Technical · On-Page · Off-Page</span>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🤖</div>
+                <h3>AEO</h3>
+                <p>Answer Engine Optimization — structuring your content to appear in AI-powered search results, featured snippets, and voice search.</p>
+                <span class="service-tag">AI Search · Voice · Snippets</span>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">⚡</div>
+                <h3>GEO</h3>
+                <p>Generative Engine Optimization — ensuring your brand is cited and recommended by AI tools like ChatGPT, Gemini, and Perplexity.</p>
+                <span class="service-tag">ChatGPT · Gemini · Perplexity</span>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🎬</div>
+                <h3>CONTENT & CREATIVES</h3>
+                <p>Scroll-stopping ad creatives, video production, and content strategy that captures attention and drives action.</p>
+                <span class="service-tag">Video · Graphics · Copy</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Approach Section -->
+    <section id="approach">
+        <div class="section-label">// How We Work</div>
+        <h2 class="section-title">OUR APPROACH</h2>
+        <div class="divider"></div>
+        <p class="section-desc">A systematic methodology that turns ad spend into predictable revenue.</p>
+
+        <div class="approach-grid">
+            <div class="approach-item">
+                <div class="approach-number">01</div>
+                <h3>DECODE</h3>
+                <p>We deep-dive into your market, audience psychology, competitor landscape, and data patterns to find hidden opportunities others miss.</p>
+            </div>
+            <div class="approach-item">
+                <div class="approach-number">02</div>
+                <h3>ENGINEER</h3>
+                <p>We architect custom campaign systems — from funnel design to creative frameworks — built specifically for your business goals and audience.</p>
+            </div>
+            <div class="approach-item">
+                <div class="approach-number">03</div>
+                <h3>ENCRYPT</h3>
+                <p>We lock in your competitive advantage with continuous optimization, scaling what works, cutting what doesn't — protecting your ROI at every step.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="section-label">// Our Work</div>
+        <h2 class="section-title">PROJECTS</h2>
+        <div class="divider"></div>
+        <p class="section-desc">Selected campaigns where we turned ad spend into measurable business growth.</p>
+
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-preview">
+                    <div class="project-preview-text">01</div>
+                </div>
+                <div class="project-info">
+                    <div class="project-category">Meta Ads · E-Commerce</div>
+                    <h3>Fashion Brand — ROAS Scaling</h3>
+                    <p>Scaled a D2C fashion brand from ₹2L to ₹15L monthly revenue through systematic Meta Ads optimization and creative testing.</p>
+                    <div class="project-stats">
+                        <div class="project-stat">
+                            <div class="project-stat-value">4.2x</div>
+                            <div class="project-stat-label">ROAS</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">-62%</div>
+                            <div class="project-stat-label">CPA Reduction</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">7.5x</div>
+                            <div class="project-stat-label">Revenue Growth</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-preview">
+                    <div class="project-preview-text">02</div>
+                </div>
+                <div class="project-info">
+                    <div class="project-category">Google Ads · Lead Gen</div>
+                    <h3>SaaS Platform — Lead Generation</h3>
+                    <p>Built a Google Ads funnel generating 500+ qualified B2B leads monthly with a cost-per-lead under ₹200.</p>
+                    <div class="project-stats">
+                        <div class="project-stat">
+                            <div class="project-stat-value">500+</div>
+                            <div class="project-stat-label">Leads/Mo</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">₹180</div>
+                            <div class="project-stat-label">Avg CPL</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">35%</div>
+                            <div class="project-stat-label">Conversion Rate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-preview">
+                    <div class="project-preview-text">03</div>
+                </div>
+                <div class="project-info">
+                    <div class="project-category">SEO + AEO · Healthcare</div>
+                    <h3>HealthTech — Organic Dominance</h3>
+                    <p>Achieved page 1 rankings for 120+ high-intent keywords and featured snippet presence across AI search platforms.</p>
+                    <div class="project-stats">
+                        <div class="project-stat">
+                            <div class="project-stat-value">120+</div>
+                            <div class="project-stat-label">Keywords Ranked</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">340%</div>
+                            <div class="project-stat-label">Traffic Growth</div>
+                        </div>
+                        <div class="project-stat">
+                            <div class="project-stat-value">₹0</div>
+                            <div class="project-stat-label">Ad Spend</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials">
+        <div class="section-label">// Client Voices</div>
+        <h2 class="section-title">TESTIMONIALS</h2>
+        <div class="divider"></div>
+
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <p>Cyphrix Media didn't just run our ads — they completely transformed our digital strategy. Our ROAS tripled in the first quarter.</p>
+                <div class="testimonial-author">Arjun Mehta</div>
+                <div class="testimonial-role">Founder, StyleVerse D2C</div>
+            </div>
+            <div class="testimonial-card">
+                <p>Their SEO and AEO work put us on the map — literally. We now appear in AI search results across ChatGPT and Google AI Overviews.</p>
+                <div class="testimonial-author">Priya Sharma</div>
+                <div class="testimonial-role">CMO, MedConnect Health</div>
+            </div>
+            <div class="testimonial-card">
+                <p>The data-driven approach is what sets them apart. Every decision is backed by numbers, and the results speak for themselves.</p>
+                <div class="testimonial-author">Vikram Patel</div>
+                <div class="testimonial-role">CEO, CloudScale SaaS</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="section-label">// Let's Connect</div>
+        <h2 class="section-title">GET IN TOUCH</h2>
+        <div class="divider"></div>
+
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h3>Ready to decode your market?</h3>
+                <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 30px;">
+                    Whether you're looking to scale your ads, dominate search rankings, or build a presence in AI-powered platforms — we're here to make it happen.
+                </p>
+
+                <div class="contact-item">
+                    <div class="contact-item-icon">📧</div>
+                    <a href="mailto:cyphrixmedia@gmail.com">cyphrixmedia@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-item-icon">📷</div>
+                    <a href="https://instagram.com/cyphrixmedia" target="_blank">@cyphrixmedia</a>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-item-icon">📍</div>
+                    <span>India</span>
+                </div>
+            </div>
+
+            <form class="contact-form" onsubmit="handleSubmit(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Your Email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Company / Brand Name">
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="What service are you interested in?">
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Tell us about your project..."></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; text-align: center;">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-left">© 2026 CYPHRIX MEDIA — ALL RIGHTS RESERVED</div>
+        <div class="footer-socials">
+            <a href="https://instagram.com/cyphrixmedia" target="_blank" title="Instagram">📷</a>
+            <a href="https://youtube.com/@cyphrixmedia" target="_blank" title="YouTube">▶</a>
+            <a href="https://tiktok.com/@cyphrixmedia" target="_blank" title="TikTok">🎵</a>
+            <a href="https://linkedin.com/company/cyphrixmedia" target="_blank" title="LinkedIn">💼</a>
+            <a href="https://x.com/cyphrixmedia" target="_blank" title="X">𝕏</a>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        // Close menu on link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+
+        // Form handler
+        function handleSubmit(e) {
+            e.preventDefault();
+            alert('Thank you! We will get back to you within 24 hours.');
+            e.target.reset();
+        }
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.service-card, .project-card, .testimonial-card, .approach-item, .stat-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+
+</body>
+</html>
+
