@@ -1,0 +1,533 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyphrix Media | Decode the Market. Encrypt the Win.</title>
+    <meta name="description" content="Cyphrix Media — Performance-first digital agency. Data-driven campaigns across Meta, Google & AI platforms.">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--c:#00d4ff;--b:#0066ff;--r:#ff3c5f;--g:#ffd600;--p:#7c3aed;--d:#0a0a0a;--cd:#111;--bd:#999;--w:#fff;--br:#222}
+        html{scroll-behavior:smooth}
+        body{font-family:'Inter',sans-serif;background:var(--d);color:var(--w);overflow-x:hidden;cursor:none}
+
+        /* SPIDER CANVAS */
+        #spiderCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;pointer-events:none}
+
+        /* CURSOR */
+        .cur{position:fixed;pointer-events:none;z-index:99998;border-radius:50%}
+        #cDot{width:6px;height:6px;background:var(--r)}
+        #cGlow{width:40px;height:40px;border:1.5px solid var(--c);opacity:.8;transition:.15s}
+        #cGlow.on{width:60px;height:60px;border-color:var(--r);background:rgba(255,60,95,.06)}
+        #cLbl{position:fixed;pointer-events:none;z-index:99998;font:700 10px/1 'Space Grotesk',sans-serif;letter-spacing:3px;color:var(--c);opacity:0;transition:opacity .3s;white-space:nowrap}
+
+        /* LOADER */
+        #ld{position:fixed;inset:0;background:#000;z-index:100000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s,visibility .6s}
+        #ld.go{opacity:0;visibility:hidden}
+        #ld img{width:80px;border-radius:14px;animation:pls 1.5s ease-in-out infinite alternate}
+        @keyframes pls{0%{transform:scale(.88);opacity:.4}100%{transform:scale(1);opacity:1}}
+        .ld-bar{width:160px;height:2px;background:#1a1a1a;margin-top:28px;border-radius:2px;overflow:hidden}
+        .ld-fill{height:100%;width:0;background:linear-gradient(90deg,var(--c),var(--b));animation:ldf 2.5s ease forwards}
+        @keyframes ldf{to{width:100%}}
+        .ld-txt{font:500 11px/1 'Syne',sans-serif;letter-spacing:6px;color:#333;margin-top:14px;text-transform:uppercase}
+
+        /* NAV */
+        nav{position:fixed;top:0;width:100%;padding:18px 50px;display:flex;justify-content:space-between;align-items:center;z-index:9000;background:rgba(10,10,10,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--br);transition:padding .3s}
+        nav.sm{padding:12px 50px}
+        .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--w)}
+        .logo img{height:36px;border-radius:8px;transition:transform .3s}
+        .logo:hover img{transform:rotate(-5deg) scale(1.08)}
+        .logo span{font:800 1.35rem/1 'Syne',sans-serif;letter-spacing:2px}
+        .logo i{color:var(--c);font-style:normal}
+        .mn{display:flex;list-style:none;gap:28px;align-items:center}
+        .mn a{color:var(--bd);text-decoration:none;font:500 .82rem/1 'Space Grotesk',sans-serif;letter-spacing:1px;transition:color .3s;position:relative}
+        .mn a:hover{color:var(--w)}
+        .mn a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1.5px;background:var(--c);transition:width .3s}
+        .mn a:hover::after{width:100%}
+        .mn-cta{padding:10px 24px;background:var(--c);color:var(--d);border-radius:50px;font-weight:700;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;transition:.3s}
+        .mn-cta:hover{background:var(--r);color:var(--w);transform:scale(1.05)}
+        .mn-cta::after{display:none!important}
+        .brgr{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none}
+        .brgr span{width:24px;height:2px;background:var(--w);transition:.3s;display:block}
+
+        /* HERO */
+        .hero{min-height:100vh;display:flex;align-items:center;padding:140px 50px 80px;position:relative;overflow:hidden}
+        .hero-in{max-width:720px;z-index:2}
+        .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border:1px solid var(--br);border-radius:50px;font:.75rem 'Space Grotesk',sans-serif;color:var(--bd);letter-spacing:2px;margin-bottom:26px;opacity:0;animation:up .7s 2.6s forwards}
+        .badge .dot{width:6px;height:6px;background:var(--r);border-radius:50%;animation:blk 1.4s infinite}
+        @keyframes blk{0%,100%{opacity:1}50%{opacity:.2}}
+        .hero h1{font:800 clamp(2.8rem,6.5vw,4.8rem)/1.06 'Syne',sans-serif;margin-bottom:22px;opacity:0;animation:up .7s 2.8s forwards}
+        .hero h1 em{font-style:normal;color:var(--c);position:relative}
+        .hero h1 em::after{content:'';position:absolute;bottom:4px;left:0;width:100%;height:10px;background:rgba(0,212,255,.12);border-radius:2px;z-index:-1}
+        .hero-p{font-size:1.05rem;color:var(--bd);line-height:1.8;max-width:520px;margin-bottom:34px;opacity:0;animation:up .7s 3s forwards}
+        .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:up .7s 3.2s forwards}
+        @keyframes up{to{opacity:1;transform:translateY(0)}}
+        .badge,.hero h1,.hero-p,.hero-ctas{transform:translateY(30px)}
+        .bp{padding:15px 36px;background:var(--w);color:var(--d);border:none;border-radius:50px;font:700 .88rem/1 'Space Grotesk',sans-serif;letter-spacing:1px;cursor:pointer;text-decoration:none;transition:.4s}
+        .bp:hover{background:var(--c);box-shadow:0 10px 40px rgba(0,212,255,.25);transform:scale(1.04)}
+        .bg{padding:15px 36px;background:transparent;color:var(--w);border:1.5px solid var(--br);border-radius:50px;font:600 .88rem/1 'Space Grotesk',sans-serif;letter-spacing:1px;cursor:pointer;text-decoration:none;transition:.3s}
+        .bg:hover{border-color:var(--c);color:var(--c)}
+        .orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:.25;z-index:1;animation:ofl 14s ease-in-out infinite}
+        .o1{width:500px;height:500px;background:var(--b);top:-10%;right:-5%}
+        .o2{width:350px;height:350px;background:var(--p);bottom:5%;right:18%;animation-delay:-5s}
+        .o3{width:250px;height:250px;background:var(--c);top:35%;right:35%;opacity:.12;animation-delay:-9s}
+        @keyframes ofl{0%,100%{transform:translate(0,0)}33%{transform:translate(30px,-40px)}66%{transform:translate(-20px,30px)}}
+
+        /* TICKER */
+        .tk{padding:18px 0;background:var(--w);overflow:hidden}
+        .tk-t{display:inline-flex;animation:tks 22s linear infinite}
+        .tk-i{font:700 .95rem/1 'Syne',sans-serif;color:var(--d);letter-spacing:3px;text-transform:uppercase;padding:0 32px;white-space:nowrap}
+        .tk-i b{color:var(--r);font-weight:700;margin:0 12px}
+        @keyframes tks{to{transform:translateX(-50%)}}
+
+        /* STATS */
+        .sbar{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--br)}
+        .sb{padding:44px 28px;text-align:center;border-right:1px solid var(--br);transition:.4s}
+        .sb:last-child{border-right:none}
+        .sb:hover{background:var(--c)}
+        .sb:hover .sn{color:var(--d)}
+        .sb:hover .sl{color:rgba(0,0,0,.5)}
+        .sn{font:800 2.8rem/1 'Syne',sans-serif;color:var(--c);transition:color .3s}
+        .sl{font:.7rem 'Space Grotesk',sans-serif;letter-spacing:3px;text-transform:uppercase;color:#555;margin-top:6px;transition:color .3s}
+
+        /* SECTIONS */
+        section{padding:110px 50px}
+        .stg{font:700 .72rem/1 'Space Grotesk',sans-serif;letter-spacing:5px;text-transform:uppercase;color:var(--r);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+        .stg::before{content:'';width:24px;height:1.5px;background:var(--r)}
+        .stt{font:800 clamp(1.8rem,3.5vw,2.7rem)/1.15 'Syne',sans-serif;margin-bottom:16px}
+        .sds{font-size:1rem;color:var(--bd);line-height:1.8;max-width:540px}
+        .shd{max-width:640px;margin-bottom:60px}
+
+        /* SERVICES */
+        .sgr{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+        .sc{padding:38px 28px;border:1px solid var(--br);border-radius:14px;background:var(--cd);transition:.5s;position:relative;overflow:hidden}
+        .sc::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--c),var(--b));opacity:0;transition:opacity .5s;border-radius:14px;z-index:0}
+        .sc:hover::after{opacity:1}
+        .sc:hover{transform:translateY(-8px);box-shadow:0 25px 60px rgba(0,212,255,.15);border-color:transparent}
+        .sc:hover *{position:relative;z-index:1}
+        .sc:hover .sc-n{color:rgba(0,0,0,.2)}
+        .sc:hover h3{color:var(--d)}
+        .sc:hover p{color:rgba(0,0,0,.6)}
+        .sc:hover .tg span{border-color:rgba(0,0,0,.2);color:var(--d)}
+        .sc-n{font:800 3rem/1 'Syne',sans-serif;color:#1a1a1a;margin-bottom:18px;transition:color .3s}
+        .sc h3{font:700 1.15rem/1.3 'Syne',sans-serif;margin-bottom:10px;transition:color .3s}
+        .sc p{color:#666;font-size:.88rem;line-height:1.7;margin-bottom:16px;transition:color .3s}
+        .tg{display:flex;flex-wrap:wrap;gap:6px}
+        .tg span{padding:4px 12px;border:1px solid var(--br);border-radius:50px;font-size:.68rem;font-weight:500;letter-spacing:1px;color:#777;transition:.3s}
+
+        /* APPROACH */
+        #approach{background:var(--w);color:var(--d)}
+        #approach .stt{color:var(--d)}
+        #approach .sds{color:#666}
+        #approach .stg{color:var(--b)}
+        #approach .stg::before{background:var(--b)}
+        .agr{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+        .ac{padding:44px 28px;border:1px solid #e0e0e0;border-radius:14px;transition:.4s;position:relative;overflow:hidden;background:var(--w)}
+        .ac:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.08);border-color:var(--b)}
+        .ac-i{font-size:2.2rem;margin-bottom:18px;display:inline-block;transition:transform .3s}
+        .ac:hover .ac-i{transform:scale(1.2) rotate(-5deg)}
+        .ac h3{font:700 1.25rem/1.3 'Syne',sans-serif;margin-bottom:10px;color:var(--d)}
+        .ac p{color:#777;line-height:1.7;font-size:.88rem}
+        .ac-num{position:absolute;top:8px;right:16px;font:800 4.5rem/1 'Syne',sans-serif;color:rgba(0,0,0,.03)}
+
+        /* PROJECTS */
+        .pgr{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+        .pc{border-radius:16px;overflow:hidden;border:1px solid var(--br);background:var(--cd);transition:.5s}
+        .pc:hover{transform:translateY(-8px) scale(1.01);box-shadow:0 35px 70px rgba(0,0,0,.2)}
+        .pc-img{height:250px;position:relative;overflow:hidden}
+        .pc-bg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font:800 5rem/1 'Syne',sans-serif;color:rgba(255,255,255,.1);transition:transform .5s}
+        .pc:hover .pc-bg{transform:scale(1.08)}
+        .g1{background:linear-gradient(135deg,#667eea,#764ba2)}
+        .g2{background:linear-gradient(135deg,#f093fb,#f5576c)}
+        .g3{background:linear-gradient(135deg,#4facfe,#00f2fe)}
+        .pc-info{padding:28px}
+        .pc-cat{font:600 .68rem/1 'Space Grotesk',sans-serif;letter-spacing:3px;text-transform:uppercase;color:var(--r);margin-bottom:8px}
+        .pc-info h3{font:700 1.15rem/1.3 'Syne',sans-serif;margin-bottom:10px}
+        .pc-info p{color:#777;font-size:.88rem;line-height:1.7;margin-bottom:18px}
+        .ps{display:flex;gap:24px}
+        .ps-v{font:800 1.25rem/1 'Syne',sans-serif}
+        .ps-l{font-size:.63rem;color:#666;letter-spacing:2px;text-transform:uppercase;margin-top:3px}
+
+        /* TESTIMONIALS */
+        #testimonials{background:var(--w);color:var(--d)}
+        #testimonials .stt{color:var(--d)}
+        #testimonials .sds{color:#666}
+        .tgr{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+        .tc{padding:38px 28px;border:1px solid #e0e0e0;border-radius:14px;transition:.4s;background:var(--w)}
+        .tc:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.06)}
+        .tc-s{color:var(--g);font-size:1rem;margin-bottom:14px;letter-spacing:2px}
+        .tc blockquote{font-size:.92rem;color:#555;line-height:1.8;font-style:italic;margin-bottom:24px}
+        .tc-w{display:flex;align-items:center;gap:12px}
+        .tc-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:800 1rem/1 'Syne',sans-serif;color:var(--w);flex-shrink:0}
+        .tc-w h4{font:700 .92rem/1.2 'Syne',sans-serif;color:var(--d)}
+        .tc-w p{font-size:.72rem;color:#999}
+
+        /* CTA */
+        .cta{text-align:center;padding:110px 50px;position:relative;overflow:hidden}
+        .cta h2{font:800 clamp(2rem,4.5vw,3.2rem)/1.15 'Syne',sans-serif;margin-bottom:16px}
+        .cta h2 em{font-style:normal;color:var(--c)}
+        .cta>p{color:var(--bd);font-size:1.05rem;max-width:540px;margin:0 auto 34px;line-height:1.7}
+        .cta-btn{padding:18px 46px;background:var(--r);color:var(--w);border:none;border-radius:50px;font:700 .92rem/1 'Space Grotesk',sans-serif;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:.4s;display:inline-block}
+        .cta-btn:hover{transform:scale(1.08);box-shadow:0 15px 50px rgba(255,60,95,.35)}
+
+        /* CONTACT */
+        #contact{background:var(--d)}
+        .cw{display:grid;grid-template-columns:1fr 1fr;gap:65px;align-items:start}
+        .cl h3{font:700 1.5rem/1.3 'Syne',sans-serif;margin-bottom:14px}
+        .cl>p{color:var(--bd);line-height:1.8;margin-bottom:32px}
+        .ci{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+        .ci-ic{width:40px;height:40px;border:1px solid var(--br);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+        .ci a,.ci span{color:var(--bd);text-decoration:none;font-weight:500;font-size:.92rem;transition:color .3s}
+        .ci a:hover{color:var(--c)}
+        .cf{display:flex;flex-direction:column;gap:14px}
+        .cr{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+        .cf input,.cf textarea{width:100%;padding:13px 16px;border:1px solid var(--br);border-radius:10px;font:.88rem 'Inter',sans-serif;background:#111;color:var(--w);outline:none;transition:.3s}
+        .cf input:focus,.cf textarea:focus{border-color:var(--c);box-shadow:0 0 0 3px rgba(0,212,255,.1)}
+        .cf textarea{min-height:120px;resize:vertical}
+        .cf button{padding:14px;background:var(--c);color:var(--d);border:none;border-radius:50px;font:700 .92rem/1 'Space Grotesk',sans-serif;letter-spacing:1px;cursor:pointer;transition:.4s}
+        .cf button:hover{background:var(--r);color:var(--w);transform:scale(1.02);box-shadow:0 10px 30px rgba(255,60,95,.3)}
+
+        /* FOOTER */
+        footer{background:#050505;padding:50px 50px;color:var(--w)}
+        .ft-t{display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:32px;margin-bottom:40px}
+        .ft-br{display:flex;align-items:center;gap:14px}
+        .ft-br img{height:42px;border-radius:8px}
+        .ft-br h4{font:800 1.25rem/1 'Syne',sans-serif;letter-spacing:2px}
+        .ft-br h4 i{color:var(--c);font-style:normal}
+        .ft-br>div>p{color:#555;font-size:.78rem;margin-top:4px;max-width:260px;line-height:1.6}
+        .ft-c h5{font:.7rem 'Space Grotesk',sans-serif;letter-spacing:3px;text-transform:uppercase;color:#444;margin-bottom:14px;font-weight:700}
+        .ft-c a{display:block;color:#777;text-decoration:none;margin-bottom:9px;font-size:.88rem;transition:color .3s}
+        .ft-c a:hover{color:var(--c)}
+        .ft-so{display:flex;gap:9px;margin-top:10px}
+        .ft-so a{width:38px;height:38px;border:1px solid #222;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#666;font-size:.88rem;transition:.3s;margin:0}
+        .ft-so a:hover{border-color:var(--c);color:var(--c);transform:translateY(-2px)}
+        .ft-b{border-top:1px solid #1a1a1a;padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+        .ft-b p{color:#333;font-size:.78rem}
+
+        /* SCROLL REVEAL */
+        .rv{opacity:0;transform:translateY(40px);transition:all .7s cubic-bezier(.22,1,.36,1)}
+        .rv.show{opacity:1;transform:translateY(0)}
+
+        /* WEB SECTION BG */
+        .ws{position:relative}
+        .ws canvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+        .ws>*:not(canvas){position:relative;z-index:1}
+
+        /* RESPONSIVE */
+        @media(max-width:1024px){
+            .sgr,.tgr{grid-template-columns:repeat(2,1fr)}
+            .agr{grid-template-columns:1fr}
+            section{padding:80px 30px}
+        }
+        @media(max-width:768px){
+            nav{padding:14px 22px}
+            .mn{display:none;position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(10,10,10,.97);flex-direction:column;align-items:center;justify-content:center;gap:22px}
+            .mn.open{display:flex}
+            .brgr{display:flex}
+            .cur,#cLbl{display:none}
+            body{cursor:auto}
+            .sgr,.pgr,.tgr,.cw{grid-template-columns:1fr}
+            .sbar{grid-template-columns:repeat(2,1fr)}
+            .sb{border-bottom:1px solid var(--br)}
+            .cr{grid-template-columns:1fr}
+            .hero{padding:120px 22px 60px}
+            footer{padding:36px 22px}
+            .cta{padding:70px 22px}
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADER -->
+    <div id="ld">
+        <img src="1356df60-0f1c-4692-8922-f6b36a7d2340.jpg.jpeg" alt="Cyphrix Media">
+        <div class="ld-bar"><div class="ld-fill"></div></div>
+        <div class="ld-txt">Loading Experience</div>
+    </div>
+
+    <!-- SPIDER CANVAS -->
+    <canvas id="spiderCanvas"></canvas>
+
+    <!-- CURSOR -->
+    <div class="cur" id="cDot"></div>
+    <div class="cur" id="cGlow"></div>
+    <div id="cLbl"></div>
+
+    <!-- NAV -->
+    <nav id="nav">
+        <a href="#" class="logo">
+            <img src="1356df60-0f1c-4692-8922-f6b36a7d2340.jpg.jpeg" alt="Cyphrix Media">
+            <span>CYPHRIX<i>.</i></span>
+        </a>
+        <ul class="mn" id="mn">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#approach">Approach</a></li>
+            <li><a href="#projects">Work</a></li>
+            <li><a href="#testimonials">Clients</a></li>
+            <li><a href="#contact" class="mn-cta">Let's Talk</a></li>
+        </ul>
+        <button class="brgr" id="brgr" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- HERO (No banner PNG, no hero logo — clean layout) -->
+    <section class="hero" id="home">
+        <div class="hero-in">
+            <div class="badge"><span class="dot"></span> Open for Q4 2026 Projects</div>
+            <h1 id="hH1">We craft ads that <em>convert.</em></h1>
+            <p class="hero-p">Cyphrix Media is a performance-first digital agency. Data-driven campaigns across Meta, Google & AI platforms — Decode the Market. Encrypt the Win.</p>
+            <div class="hero-ctas">
+                <a href="#contact" class="bp">Start a Project</a>
+                <a href="#projects" class="bg">View Our Work →</a>
+            </div>
+        </div>
+        <div class="orb o1"></div>
+        <div class="orb o2"></div>
+        <div class="orb o3"></div>
+    </section>
+
+    <!-- TICKER -->
+    <div class="tk">
+        <div class="tk-t">
+            <div class="tk-i">Meta Ads <b>●</b> Google Ads <b>●</b> SEO <b>●</b> AEO <b>●</b> GEO <b>●</b> Content Strategy <b>●</b> Performance Marketing <b>●</b> Creative Production <b>●</b></div>
+            <div class="tk-i">Meta Ads <b>●</b> Google Ads <b>●</b> SEO <b>●</b> AEO <b>●</b> GEO <b>●</b> Content Strategy <b>●</b> Performance Marketing <b>●</b> Creative Production <b>●</b></div>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="sbar">
+        <div class="sb rv"><div class="sn">50+</div><div class="sl">Campaigns Launched</div></div>
+        <div class="sb rv"><div class="sn">3.5x</div><div class="sl">Average ROAS</div></div>
+        <div class="sb rv"><div class="sn">98%</div><div class="sl">Client Retention</div></div>
+        <div class="sb rv"><div class="sn">₹2Cr+</div><div class="sl">Ad Spend Managed</div></div>
+    </div>
+
+    <!-- SERVICES -->
+    <section id="services" class="ws">
+        <canvas id="wc1"></canvas>
+        <div class="shd rv">
+            <div class="stg">What We Do</div>
+            <h2 class="stt">Services built for growth, not impressions.</h2>
+            <p class="sds">Every service is engineered for one outcome — measurable business growth. Zero vanity metrics.</p>
+        </div>
+        <div class="sgr">
+            <div class="sc rv"><div class="sc-n">01</div><h3>Meta Ads</h3><p>Full-funnel Facebook & Instagram campaigns with advanced targeting, dynamic creatives, and CRO.</p><div class="tg"><span>Facebook</span><span>Instagram</span><span>WhatsApp</span></div></div>
+            <div class="sc rv"><div class="sc-n">02</div><h3>Google Ads</h3><p>High-intent Search, Display, Shopping & YouTube campaigns for max visibility and lowest CPA.</p><div class="tg"><span>Search</span><span>Display</span><span>YouTube</span></div></div>
+            <div class="sc rv"><div class="sc-n">03</div><h3>SEO</h3><p>Technical audits, content strategy, and link building for top organic rankings and sustained traffic.</p><div class="tg"><span>Technical</span><span>On-Page</span><span>Link Building</span></div></div>
+            <div class="sc rv"><div class="sc-n">04</div><h3>AEO</h3><p>Answer Engine Optimization — get featured in AI answers, voice results, and rich snippets.</p><div class="tg"><span>AI Search</span><span>Voice</span><span>Snippets</span></div></div>
+            <div class="sc rv"><div class="sc-n">05</div><h3>GEO</h3><p>Generative Engine Optimization — be cited by ChatGPT, Gemini, Perplexity & other AI platforms.</p><div class="tg"><span>ChatGPT</span><span>Gemini</span><span>Perplexity</span></div></div>
+            <div class="sc rv"><div class="sc-n">06</div><h3>Creative Production</h3><p>Scroll-stopping video ads, motion graphics, and copywriting that captures attention and converts.</p><div class="tg"><span>Video</span><span>Graphics</span><span>Copywriting</span></div></div>
+        </div>
+    </section>
+
+    <!-- APPROACH -->
+    <section id="approach">
+        <div class="shd rv">
+            <div class="stg">How We Work</div>
+            <h2 class="stt">Three steps. One outcome — Growth.</h2>
+            <p class="sds">A proven framework that turns ad spend into predictable, scalable revenue.</p>
+        </div>
+        <div class="agr">
+            <div class="ac rv"><div class="ac-num">01</div><div class="ac-i">🔍</div><h3>Decode</h3><p>Deep-dive into market landscape, audience psychology, competitor strategy, and data to find growth levers.</p></div>
+            <div class="ac rv"><div class="ac-num">02</div><div class="ac-i">⚙️</div><h3>Engineer</h3><p>Architect custom campaign systems — funnels, creatives, audiences, and bids — tailored to your goals.</p></div>
+            <div class="ac rv"><div class="ac-num">03</div><div class="ac-i">🔒</div><h3>Encrypt</h3><p>Lock in competitive advantage through relentless optimization — scale winners, cut losers, protect ROI.</p></div>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+        <div class="shd rv">
+            <div class="stg">Selected Work</div>
+            <h2 class="stt">Campaigns that moved the needle.</h2>
+            <p class="sds">Real results. Real campaigns. Strategy meets execution.</p>
+        </div>
+        <div class="pgr">
+            <div class="pc rv">
+                <div class="pc-img"><div class="pc-bg g1">01</div></div>
+                <div class="pc-info"><div class="pc-cat">Meta Ads · E-Commerce</div><h3>D2C Fashion Brand — Revenue Scaling</h3><p>Scaled from ₹2L to ₹15L monthly revenue through systematic Meta Ads optimization.</p><div class="ps"><div><div class="ps-v">4.2x</div><div class="ps-l">ROAS</div></div><div><div class="ps-v">-62%</div><div class="ps-l">CPA Reduction</div></div><div><div class="ps-v">7.5x</div><div class="ps-l">Revenue Growth</div></div></div></div>
+            </div>
+            <div class="pc rv">
+                <div class="pc-img"><div class="pc-bg g2">02</div></div>
+                <div class="pc-info"><div class="pc-cat">Google Ads · Lead Gen</div><h3>SaaS Platform — B2B Lead Engine</h3><p>500+ qualified B2B leads monthly with CPL under ₹200.</p><div class="ps"><div><div class="ps-v">500+</div><div class="ps-l">Leads/Mo</div></div><div><div class="ps-v">₹180</div><div class="ps-l">Avg CPL</div></div><div><div class="ps-v">35%</div><div class="ps-l">Conv. Rate</div></div></div></div>
+            </div>
+            <div class="pc rv">
+                <div class="pc-img"><div class="pc-bg g3">03</div></div>
+                <div class="pc-info"><div class="pc-cat">SEO + AEO · Healthcare</div><h3>HealthTech — Organic Growth</h3><p>Page 1 rankings for 120+ keywords + AI search visibility across ChatGPT & Google AI.</p><div class="ps"><div><div class="ps-v">120+</div><div class="ps-l">Keywords</div></div><div><div class="ps-v">340%</div><div class="ps-l">Traffic Up</div></div><div><div class="ps-v">₹0</div><div class="ps-l">Ad Spend</div></div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials">
+        <div class="shd rv">
+            <div class="stg">Client Stories</div>
+            <h2 class="stt">Don't take our word for it.</h2>
+            <p class="sds">Hear from founders who trusted us with their growth.</p>
+        </div>
+        <div class="tgr">
+            <div class="tc rv">
+                <div class="tc-s">★★★★★</div>
+                <blockquote>"Cyphrix completely transformed our digital presence. Their strategies brought paying customers, not just traffic. Revenue doubled in Q1."</blockquote>
+                <div class="tc-w"><div class="tc-av" style="background:linear-gradient(135deg,#667eea,#764ba2)">S</div><div><h4>Shashank</h4><p>CEO, Art & Media Ltd</p></div></div>
+            </div>
+            <div class="tc rv">
+                <div class="tc-s">★★★★★</div>
+                <blockquote>"Their SEO and AEO work put us in front of audiences we never knew existed. Our brand now shows up in AI search results — next level."</blockquote>
+                <div class="tc-w"><div class="tc-av" style="background:linear-gradient(135deg,#f093fb,#f5576c)">G</div><div><h4>Gandiva Nuthanki Srinivas</h4><p>CEO, TitanWorld</p></div></div>
+            </div>
+            <div class="tc rv">
+                <div class="tc-s">★★★★★</div>
+                <blockquote>"Their obsession with data sets them apart. Every decision backed by numbers, every campaign optimized relentlessly. They treat our budget like their own."</blockquote>
+                <div class="tc-w"><div class="tc-av" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">A</div><div><h4>Azim</h4><p>CEO, MoviesAdda</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta rv">
+        <h2>Ready to <em>decode</em> your market?</h2>
+        <p>Your growth story starts with a single conversation. Let's build campaigns that perform.</p>
+        <a href="#contact" class="cta-btn">Start Your Project →</a>
+    </div>
+
+    <!-- CONTACT — FormSubmit → cyphrixmedia@gmail.com -->
+    <section id="contact">
+        <div class="shd rv">
+            <div class="stg">Get in Touch</div>
+            <h2 class="stt">Let's build something great.</h2>
+        </div>
+        <div class="cw">
+            <div class="cl rv">
+                <h3>Drop us a line.</h3>
+                <p>Whether scaling campaigns or starting fresh — tell us your goals. Let's explore what's possible.</p>
+                <div class="ci"><div class="ci-ic">📧</div><a href="mailto:cyphrixmedia@gmail.com">cyphrixmedia@gmail.com</a></div>
+                <div class="ci"><div class="ci-ic">📷</div><a href="https://instagram.com/cyphrixmedia" target="_blank">@cyphrixmedia</a></div>
+                <div class="ci"><div class="ci-ic">📍</div><span>India</span></div>
+            </div>
+            <form class="cf rv" action="https://formsubmit.co/cyphrixmedia@gmail.com" method="POST">
+                <input type="hidden" name="_subject" value="🔥 New Inquiry — Cyphrix Media Website">
+                <input type="hidden" name="_captcha" value="true">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_next" value="https://cyphrixmedia.dpdns.org/#contact">
+                <input type="text" name="_honey" style="display:none">
+                <div class="cr">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Email Address" required>
+                </div>
+                <input type="text" name="company" placeholder="Company / Brand">
+                <input type="text" name="service" placeholder="What service interests you?">
+                <textarea name="message" placeholder="Tell us about your project or goals..."></textarea>
+                <button type="submit">Send Message →</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="ft-t">
+            <div class="ft-br">
+                <img src="1356df60-0f1c-4692-8922-f6b36a7d2340.jpg.jpeg" alt="Cyphrix Media">
+                <div>
+                    <h4>CYPHRIX<i>.</i></h4>
+                    <p>Decode the Market. Encrypt the Win. A performance-first ad agency for the AI era.</p>
+                </div>
+            </div>
+            <div class="ft-c"><h5>Navigate</h5><a href="#services">Services</a><a href="#approach">Approach</a><a href="#projects">Work</a><a href="#testimonials">Clients</a><a href="#contact">Contact</a></div>
+            <div class="ft-c"><h5>Services</h5><a href="#services">Meta Ads</a><a href="#services">Google Ads</a><a href="#services">SEO & AEO</a><a href="#services">GEO</a><a href="#services">Creatives</a></div>
+            <div class="ft-c"><h5>Connect</h5>
+                <div class="ft-so">
+                    <a href="https://instagram.com/cyphrixmedia" target="_blank">📷</a>
+                    <a href="https://youtube.com/@cyphrixmedia" target="_blank">▶️</a>
+                    <a href="https://tiktok.com/@cyphrixmedia" target="_blank">🎵</a>
+                    <a href="https://linkedin.com/company/cyphrixmedia" target="_blank">💼</a>
+                    <a href="https://x.com/cyphrixmedia" target="_blank">𝕏</a>
+                </div>
+            </div>
+        </div>
+        <div class="ft-b">
+            <p>&copy; 2026 Cyphrix Media. All rights reserved.</p>
+            <p>Decode the Market. Encrypt the Win.</p>
+        </div>
+    </footer>
+
+    <script>
+    /* === LOADER (failsafe — never gets stuck) === */
+    var ld=document.getElementById('ld');
+    setTimeout(function(){ld.classList.add('go')},3000);
+    window.addEventListener('load',function(){setTimeout(function(){ld.classList.add('go')},2500)});
+
+    /* === SPIDER CRAWL ANIMATION === */
+    (function(){
+        var cv=document.getElementById('spiderCanvas'),cx=cv.getContext('2d'),W,H,mx=0,my=0,nd=[],sp={x:0,y:0,tx:0,ty:0,tr:[]};
+        function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight;nd=[];for(var i=0;i<80;i++)nd.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3})}
+        rs();addEventListener('resize',rs);
+        document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;sp.tx=mx;sp.ty=my});
+
+        function draw(){
+            cx.clearRect(0,0,W,H);
+            for(var i=0;i<nd.length;i++){var n=nd[i];n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1}
+            for(var i=0;i<nd.length;i++){
+                for(var j=i+1;j<nd.length;j++){var dx=nd[i].x-nd[j].x,dy=nd[i].y-nd[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<150){cx.beginPath();cx.moveTo(nd[i].x,nd[i].y);cx.lineTo(nd[j].x,nd[j].y);cx.strokeStyle='rgba(0,212,255,'+(0.06*(1-d/150))+')';cx.lineWidth=.5;cx.stroke()}}
+                var sx=nd[i].x-sp.x,sy=nd[i].y-sp.y,sd=Math.sqrt(sx*sx+sy*sy);
+                if(sd<200){cx.beginPath();cx.moveTo(nd[i].x,nd[i].y);cx.lineTo(sp.x,sp.y);cx.strokeStyle='rgba(0,212,255,'+(0.15*(1-sd/200))+')';cx.lineWidth=1;cx.stroke();nd[i].x-=sx*.0008;nd[i].y-=sy*.0008}
+            }
+            sp.x+=(sp.tx-sp.x)*.06;sp.y+=(sp.ty-sp.y)*.06;
+            sp.tr.push({x:sp.x,y:sp.y,a:1});if(sp.tr.length>50)sp.tr.shift();
+            for(var t=0;t<sp.tr.length-1;t++){var p=sp.tr[t],p2=sp.tr[t+1];p.a*=.96;cx.beginPath();cx.moveTo(p.x,p.y);cx.lineTo(p2.x,p2.y);cx.strokeStyle='rgba(255,60,95,'+p.a*.3+')';cx.lineWidth=1;cx.stroke()}
+            cx.beginPath();cx.arc(sp.x,sp.y,4,0,Math.PI*2);cx.fillStyle='rgba(255,60,95,.8)';cx.fill();
+            for(var l=0;l<8;l++){var a=(l/8)*Math.PI*2+Date.now()*.003,lg=12+Math.sin(Date.now()*.01+l)*4;cx.beginPath();cx.moveTo(sp.x,sp.y);cx.lineTo(sp.x+Math.cos(a)*lg,sp.y+Math.sin(a)*lg);cx.strokeStyle='rgba(255,60,95,.5)';cx.lineWidth=1;cx.stroke()}
+            requestAnimationFrame(draw);
+        }
+        draw();
+    })();
+
+    /* === CUSTOM CURSOR === */
+    var cDot=document.getElementById('cDot'),cGlow=document.getElementById('cGlow'),cLbl=document.getElementById('cLbl'),px=0,py=0,gx=0,gy=0;
+    document.addEventListener('mousemove',function(e){px=e.clientX;py=e.clientY;cDot.style.left=(px-3)+'px';cDot.style.top=(py-3)+'px'});
+    function gl(){gx+=(px-gx)*.13;gy+=(py-gy)*.13;cGlow.style.left=(gx-20)+'px';cGlow.style.top=(gy-20)+'px';cLbl.style.left=(gx+28)+'px';cLbl.style.top=(gy-6)+'px';requestAnimationFrame(gl)}gl();
+
+    var hv=document.querySelectorAll('a,button,.sc,.pc,.tc,.sb');
+    for(var i=0;i<hv.length;i++){(function(el){
+        el.addEventListener('mouseenter',function(){cGlow.classList.add('on');cLbl.style.opacity='1';cLbl.textContent=el.tagName==='A'||el.tagName==='BUTTON'?'CLICK':el.classList.contains('sc')?'EXPLORE':el.classList.contains('pc')?'VIEW':el.classList.contains('tc')?'READ':'DISCOVER'});
+        el.addEventListener('mouseleave',function(){cGlow.classList.remove('on');cLbl.style.opacity='0'});
+    })(hv[i])}
+
+    /* === HERO TEXT MAGNETIC EFFECT === */
+    var hH1=document.getElementById('hH1');
+    if(hH1){
+        var og=hH1.innerHTML,bt='',inT=false;
+        for(var i=0;i<og.length;i++){if(og[i]==='<')inT=true;if(inT){bt+=og[i];if(og[i]==='>')inT=false}else if(og[i]===' ')bt+=' ';else bt+='<span>'+og[i]+'</span>'}
+        hH1.innerHTML=bt;
+        document.addEventListener('mousemove',function(e){
+            var sp=hH1.querySelectorAll('span:not(em)');
+            for(var s=0;s<sp.length;s++){var r=sp[s].getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,d=Math.sqrt(dx*dx+dy*dy);
+                if(d<130){var f=(130-d)/130;sp[s].style.transform='translate('+(-dx*f*.25)+'px,'+(-dy*f*.25)+'px) rotate('+(dx*f*.12)+'deg) scale('+(1+f*.25)+')';sp[s].style.color='hsl('+(180+f*50)+',90%,60%)';sp[s].style.textShadow='0 0 '+(f*20)+'px rgba(0,212,255,'+(f*.5)+')'}
+                else{sp[s].style.transform='';sp[s].style.color='';sp[s].style.textShadow=''}}
+        });
+    }
+
+    /* === SCROLL REVEAL === */
+    var ob=new IntersectionObserver(function(en){for(var i=0;i<en.length;i++)if(en[i].isIntersecting)en[i].target.classList.add('show')},{threshold:.1});
+    var rv=document.querySelectorAll('.rv');for(var i=0;i<rv.length;i++)ob.observe(rv[i]);
+
+    /* === NAV SCROLL + BURGER === */
+    addEventListener('scroll',function(){document.getElementById('nav').classList.toggle('sm',scrollY>50)});
+    document.getElementById('brgr').addEventListener('click',function(){document.getElementById('mn').classList.toggle('open')});
+    document.querySelectorAll('.mn a').forEach(function(a){a.addEventListener('click',function(){document.getElementById('mn').classList.remove('open')})});
+
+    /* === WEB CANVAS (services section) === */
+    (function(){
+        var c=document.getElementById('wc1');if(!c)return;var x=c.getContext('2d');
+        function d(){var r=c.parentElement.getBoundingClientRect();c.width=r.width;c.height=r.height;x.clearRect(0,0,c.width,c.height);
+            var cx2=c.width/2,cy2=c.height/2,rn=6,sk=12;
+            for(var r2=1;r2<=rn;r2++){x.beginPath();for(var s=0;s<=sk;s++){var a=(s/sk)*Math.PI*2,rd=r2*(Math.min(c.width,c.height)/rn/2.2),w=Math.sin(Date.now()*.001+r2+s)*8,px=cx2+Math.cos(a)*(rd+w),py=cy2+Math.sin(a)*(rd+w);s===0?x.moveTo(px,py):x.lineTo(px,py)}x.strokeStyle='rgba(0,212,255,0.03)';x.lineWidth=.5;x.stroke()}
+            for(var s=0;s<sk;s++){var a=(s/sk)*Math.PI*2;x.beginPath();x.moveTo(cx2,cy2);var oR=rn*(Math.min(c.width,c.height)/rn/2.2);x.lineTo(cx2+Math.cos(a)*oR,cy2+Math.sin(a)*oR);x.strokeStyle='rgba(0,212,255,0.02)';x.lineWidth=.5;x.stroke()}
+            requestAnimationFrame(d)}d();
+    })();
+    </script>
+</body>
+</html>
+
