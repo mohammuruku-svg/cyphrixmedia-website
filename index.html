@@ -62,7 +62,7 @@
         .hero-badge .dot{width:6px;height:6px;background:var(--red);border-radius:50%;animation:blink 1.4s infinite}
         @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
         .hero-logo{width:100px;height:100px;border-radius:16px;margin-bottom:28px;filter:drop-shadow(0 0 40px rgba(0,212,255,0.2));opacity:0;animation:rise 0.7s 3s forwards}
-        .hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,6.5vw,5rem);font-weight:800;line-height:1.06;margin-bottom:22px;opacity:0;animation:rise 0.7s 3.2s forwards}
+       
         .hero h1 em{font-style:normal;color:var(--cyan);position:relative}
         .hero h1 em::after{content:'';position:absolute;bottom:4px;left:0;width:100%;height:10px;background:rgba(0,212,255,0.12);border-radius:2px;z-index:-1}
         .hero-p{font-size:1.05rem;color:var(--body);line-height:1.8;max-width:520px;margin-bottom:35px;opacity:0;animation:rise 0.7s 3.4s forwards}
@@ -70,7 +70,7 @@
         @keyframes rise{to{opacity:1;transform:translateY(0)}}
         [style*="animation:rise"],
         .hero-badge,.hero-logo,.hero h1,.hero-p,.hero-ctas{transform:translateY(30px)}
-        .btn-primary{padding:15px 38px;background:var(--white);color:var(--dark);border:none;border-radius:50px;font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:700;letter-spacing:1px;cursor:pointer;text-decoration:none;transition:all 0.4s}
+        .hero-badge,.hero h1,.hero-p,.hero-ctas{transform:translateY(30px)}
         .btn-primary:hover{background:var(--cyan);box-shadow:0 10px 40px rgba(0,212,255,0.25);transform:scale(1.04)}
         .btn-ghost{padding:15px 38px;background:transparent;color:var(--white);border:1.5px solid var(--border);border-radius:50px;font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:600;letter-spacing:1px;cursor:pointer;text-decoration:none;transition:all 0.3s}
         .btn-ghost:hover{border-color:var(--cyan);color:var(--cyan)}
@@ -283,7 +283,7 @@
     <section class="hero" id="home">
         <div class="hero-inner">
             <div class="hero-badge"><span class="dot"></span> Open for Q4 2026 Projects</div>
-            <img src="1356df60-0f1c-4692-8922-f6b36a7d2340.jpg.jpeg" alt="Cyphrix Media" class="hero-logo">
+        
             <h1 id="heroH1">We craft ads that <em>convert.</em></h1>
             <p class="hero-p">Cyphrix Media is a performance-first digital agency. Data-driven campaigns across Meta, Google & AI platforms — Decode the Market. Encrypt the Win.</p>
             <div class="hero-ctas">
