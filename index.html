@@ -61,7 +61,7 @@
         .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border:1px solid var(--border);border-radius:50px;font-size:0.75rem;font-family:'Space Grotesk',sans-serif;color:var(--body);letter-spacing:2px;margin-bottom:28px;opacity:0;animation:rise 0.7s 2.8s forwards}
         .hero-badge .dot{width:6px;height:6px;background:var(--red);border-radius:50%;animation:blink 1.4s infinite}
         @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
-        .hero-banner{width:220px;border-radius:14px;margin-bottom:28px;filter:drop-shadow(0 0 40px rgba(0,212,255,0.15));opacity:0;animation:rise 0.7s 3s forwards}
+        .hero-logo{width:100px;height:100px;border-radius:16px;margin-bottom:28px;filter:drop-shadow(0 0 40px rgba(0,212,255,0.2));opacity:0;animation:rise 0.7s 3s forwards}
         .hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,6.5vw,5rem);font-weight:800;line-height:1.06;margin-bottom:22px;opacity:0;animation:rise 0.7s 3.2s forwards}
         .hero h1 em{font-style:normal;color:var(--cyan);position:relative}
         .hero h1 em::after{content:'';position:absolute;bottom:4px;left:0;width:100%;height:10px;background:rgba(0,212,255,0.12);border-radius:2px;z-index:-1}
@@ -69,7 +69,7 @@
         .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:rise 0.7s 3.6s forwards}
         @keyframes rise{to{opacity:1;transform:translateY(0)}}
         [style*="animation:rise"],
-        .hero-badge,.hero-banner,.hero h1,.hero-p,.hero-ctas{transform:translateY(30px)}
+        .hero-badge,.hero-logo,.hero h1,.hero-p,.hero-ctas{transform:translateY(30px)}
         .btn-primary{padding:15px 38px;background:var(--white);color:var(--dark);border:none;border-radius:50px;font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:700;letter-spacing:1px;cursor:pointer;text-decoration:none;transition:all 0.4s}
         .btn-primary:hover{background:var(--cyan);box-shadow:0 10px 40px rgba(0,212,255,0.25);transform:scale(1.04)}
         .btn-ghost{padding:15px 38px;background:transparent;color:var(--white);border:1.5px solid var(--border);border-radius:50px;font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:600;letter-spacing:1px;cursor:pointer;text-decoration:none;transition:all 0.3s}
@@ -242,7 +242,6 @@
             .hero{padding:130px 22px 70px}
             footer{padding:40px 22px}
             .cta{padding:80px 22px}
-            .hero-banner{width:160px}
         }
     </style>
 </head>
@@ -284,9 +283,9 @@
     <section class="hero" id="home">
         <div class="hero-inner">
             <div class="hero-badge"><span class="dot"></span> Open for Q4 2026 Projects</div>
-            <img src="file_00000000f5708208ac334cbf794ddb30.png" alt="Cyphrix Media" class="hero-banner">
+            <img src="1356df60-0f1c-4692-8922-f6b36a7d2340.jpg.jpeg" alt="Cyphrix Media" class="hero-logo">
             <h1 id="heroH1">We craft ads that <em>convert.</em></h1>
-            <p class="hero-p">Cyphrix Media is a performance-first digital agency. Data-driven campaigns across Meta, Google & AI platforms that turn clicks into customers.</p>
+            <p class="hero-p">Cyphrix Media is a performance-first digital agency. Data-driven campaigns across Meta, Google & AI platforms — Decode the Market. Encrypt the Win.</p>
             <div class="hero-ctas">
                 <a href="#contact" class="btn-primary">Start a Project</a>
                 <a href="#projects" class="btn-ghost">View Our Work →</a>
@@ -482,14 +481,12 @@
 
         function drawWeb(){
             ctx.clearRect(0,0,W,H);
-            // Move nodes
             for(var i=0;i<nodes.length;i++){
                 var n=nodes[i];
                 n.x+=n.vx;n.y+=n.vy;
                 if(n.x<0||n.x>W)n.vx*=-1;
                 if(n.y<0||n.y>H)n.vy*=-1;
             }
-            // Draw connections
             for(var i=0;i<nodes.length;i++){
                 for(var j=i+1;j<nodes.length;j++){
                     var dx=nodes[i].x-nodes[j].x;
@@ -504,7 +501,6 @@
                         ctx.stroke();
                     }
                 }
-                // Connect to spider/cursor
                 var sdx=nodes[i].x-spider.x;
                 var sdy=nodes[i].y-spider.y;
                 var sd=Math.sqrt(sdx*sdx+sdy*sdy);
@@ -515,17 +511,14 @@
                     ctx.strokeStyle='rgba(0,212,255,'+(0.15*(1-sd/200))+')';
                     ctx.lineWidth=1;
                     ctx.stroke();
-                    // Pull nodes slightly toward spider
                     nodes[i].x-=sdx*0.0008;
                     nodes[i].y-=sdy*0.0008;
                 }
             }
 
-            // Spider movement (smooth follow)
             spider.x+=(spider.tx-spider.x)*0.06;
             spider.y+=(spider.ty-spider.y)*0.06;
 
-            // Spider trail (silk thread)
             spider.trail.push({x:spider.x,y:spider.y,a:1});
             if(spider.trail.length>50)spider.trail.shift();
             for(var t=0;t<spider.trail.length-1;t++){
@@ -540,12 +533,10 @@
                 ctx.stroke();
             }
 
-            // Draw spider body
             ctx.beginPath();
             ctx.arc(spider.x,spider.y,4,0,Math.PI*2);
             ctx.fillStyle='rgba(255,60,95,0.8)';
             ctx.fill();
-            // Spider legs
             for(var l=0;l<8;l++){
                 var angle=(l/8)*Math.PI*2+Date.now()*0.003;
                 var legLen=12+Math.sin(Date.now()*0.01+l)*4;
@@ -630,7 +621,6 @@
             var rect=c.parentElement.getBoundingClientRect();
             c.width=rect.width;c.height=rect.height;
             ctx.clearRect(0,0,c.width,c.height);
-            // Static web pattern
             var cx2=c.width/2;var cy2=c.height/2;
             var rings=6;var spokes=12;
             for(var r=1;r<=rings;r++){
